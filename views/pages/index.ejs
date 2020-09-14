@@ -77,6 +77,7 @@
 
         $('#score').text(score)
         $('#play').hide()
+        $('#rules').text("Guess the music video by the top comment:")
         $('#table').empty().append('<tr><\tr>')
         $('#author').text(author)
         $('#comment').text(comment)
@@ -183,23 +184,30 @@
     <div id="status"></div>
 </h2>
 
+
 <h1>
     Score:
     <div id="score" style="display: inline">0</div>
 </h1>
 
+<h3>
+    <div id="rules">
+    </div>
+</h3>
+
 <br>
-<br>
+<hr class="solid">
 
 <button id="play" onclick="play()">Play</button>
 
 <h4>
-    <div id="author">
+    <div id="author" style="display: inline">
     </div>
+    wrote:
 </h4>
 
 <h3>
-    <div id="comment">
+    <div id="comment" style="max-width: 500px">
     </div>
 </h3>
 
