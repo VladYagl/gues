@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/header.ejs %>
+</head>
+
+<script src="https://apis.google.com/js/api.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<body>
+
+<script>
+    /**
+     * Sample JavaScript code for youtube.commentThreads.list
+     * See instructions for running APIs Explorer code samples locally:
+     * https://developers.google.com/explorer-help/guides/code_samples#javascript
+     */
+
+    let score = 0;
+    const API_KEY = 'AIzaSyBBdYuKULGXHTKl7nyKbyogNVVwAR2eAoM';
+    gapi.load("client");
+
+    let videos = [];
+
+    async function loadClient() {
+        videos = await fetch('videos')
+        videos = await videos.body.getReader().read()
+        videos = new TextDecoder("utf-8").decode(videos.value);
+        videos = videos.split('\n');
+
+        gapi.client.setApiKey(API_KEY);
+        return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
+            .then(function () {
+                    $("#status").html("<p style=\"color:green\">OKI DOKI</p>")
+                    console.log("GAPI client loaded for API");
+                },
+                function (err) {
+                    console.error("Error loading GAPI client for API", err);
+                });
+    }
+
+    // Make sure the client is loaded before calling this method.
+    async function play() {
+        // let videos = ['u3K6_89Ee4U', '4cucHc2vef4', 'InwwkaoUBeg'];
+
+        let videoId = videos[Math.floor(Math.random() * videos.length)];
+        // let videoId = 'AZKPd3k6O6A'
+
+        let threads = await get_threads(videoId)
+        let video = await get_video(videoId);
+        let channel = get_channel(video)
+
+        let author = ""
+        let comment = ""
+
+        for (let i = 0; i < 20; i++) {
+            author = get_author(threads[i])
+            comment = get_comment(threads[i])
+
+            if (author !== channel) {
+                break
+            }
+        }
+
+        let newc = comment.split(/(?=[\s,'.\n\r\t]+)/)
+        newc = newc.map(word => {
+            let clean = word.toLowerCase().trim().replace(/[,'.\n\r\t\s]/, '')
+            // console.log(clean, channel, channel.toLowerCase().includes(clean), get_title(video).toLowerCase().includes(clean))
+            if (/^[a-zA-Z0-9()]+$/.test(clean) && clean.length > 2 && channel.toLowerCase().includes(clean)) {
+                return "_______"
+            } else {
+                return word
+            }
+        })
+        comment = newc.join("")
+        console.log(newc)
+
+        $('#score').text(score)
+        $('#play').hide()
+        $('#table').empty().append('<tr><\tr>')
+        $('#author').text(author)
+        $('#comment').text(comment)
+
+        let selected = shuffle(videos.filter(x => x !== videoId)).slice(0, 5);
+        // let selected = shuffle(videos.filter(x => x !== videoId));
+        selected.push(videoId)
+        selected = shuffle(selected)
+
+        let cnt = 0;
+        for (const videoId of selected) {
+            cnt++
+            let video = await get_video(videoId);
+            $('#table tr:last').append(`<td><div>${
+                get_title(video).split('-').join('<br>').replace('(Official Video)', '')
+            }</div><img id='${videoId}' class=choice src='${get_thumbnail(video)}' width=400></td>`);
+
+            if (cnt >= 3) {
+                cnt = 0;
+                $('#table').append('<tr><\tr>')
+            }
+        }
+
+        $('img.choice').click(img => {
+            let selectedId = img.currentTarget.id;
+            if (selectedId === videoId) {
+                inc_score()
+                $("#status").html("<p style=\"color:green\">CORRECT.</p>")
+                play()
+            } else {
+                score = 0
+                $('#play').show()
+                $("#status").html(`<p style="color:red">WRONG. It was: ${get_title(video)}</p>`)
+            }
+        })
+    }
+
+    function shuffle(array) {
+        return array.map(function (n) {
+            return [Math.random(), n]
+        })
+            .sort().map(function (n) {
+                return n[1]
+            });
+    }
+
+    function get_author(thread) {
+        return thread.snippet.topLevelComment.snippet.authorDisplayName
+    }
+
+    function get_comment(thread) {
+        return thread.snippet.topLevelComment.snippet.textOriginal
+    }
+
+    function get_title(video) {
+        return video.snippet.title
+    }
+
+    function get_channel(video) {
+        return video.snippet.channelTitle
+    }
+
+    function get_thumbnail(video) {
+        let thumbs = video.snippet.thumbnails
+        if (thumbs.maxres) {
+            return video.snippet.thumbnails.maxres.url
+        } else {
+            return video.snippet.thumbnails.high.url
+        }
+    }
+
+    function get_video(videoId) {
+        return gapi.client.youtube.videos.list({
+            "part": [
+                "snippet"
+            ],
+            "id": videoId
+        }).then(response => response.result.items[0])
+    }
+
+    function get_threads(videoId) {
+        return gapi.client.youtube.commentThreads.list({
+            "part": [
+                "snippet"
+            ],
+            "textFormat": "plainText",
+            "order": "relevance",
+            "videoId": videoId
+        }).then(response => response.result.items)
+    }
+
+    function inc_score() {
+        score++
+        $('#score').text(score);
+    }
+
+    $(document).ready(function () {
+        loadClient()
+    });
+
+</script>
+
+<h2>
+    <div id="status"></div>
+</h2>
+
+<h1>
+    Score:
+    <div id="score" style="display: inline">0</div>
+</h1>
+
+<br>
+<br>
+
+<button id="play" onclick="play()">Play</button>
+
+<h4>
+    <div id="author">
+    </div>
+</h4>
+
+<h3>
+    <div id="comment">
+    </div>
+</h3>
+
+<table id="table">
+    <tr>
+    </tr>
+</table>
+
+</body>
+
+</html>
