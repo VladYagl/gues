@@ -38,10 +38,16 @@ express()
     .get('/edit', (req, res) => res.render('pages/edit'))
 
     .get('/lists', (req, res) => {
-        fs.readdir('.', (err, files) => {
-            let lists = files.filter(el => /\.txt$/.test(el)).map(el => el.replace(/\.[^/.]+$/, ""))
-            // console.log(lists);
-            res.send(lists)
+        // fs.readdir('.', (err, files) => {
+        //     let lists = files.filter(el => /\.txt$/.test(el)).map(el => el.replace(/\.[^/.]+$/, ""))
+        //     // console.log(lists);
+        //     res.send(lists)
+        // });
+
+        client.query(`select table_name from information_schema.tables where table_schema='public'`, (err, r) => {
+            if (err) throw err;
+            // console.log(r.rows.map(el => el.table_name));
+            res.send(r.rows.map(el => el.table_name));
         });
     })
 
@@ -54,11 +60,13 @@ express()
         // res.send(fs.readFileSync(filename));
 
         const name = req.query.list;
-        client.query(`SELECT id from ${name}`, (err, r) => {
-            if (err) throw err;
-            console.log(r.rows.map(el => el.id));
-            res.send(r.rows.map(el => el.id));
-        });
+        client.query(`CREATE TABLE IF NOT EXISTS ${name} (id VARCHAR(12) UNIQUE)`, (err, cock) => {
+            client.query(`SELECT id from ${name}`, (err, r) => {
+                if (err) throw err;
+                // console.log(r.rows.map(el => el.id));
+                res.send(r.rows.map(el => el.id));
+            });
+        })
     })
     .post('/videos', (req, fullRes) => {
         // const filename = req.query.list + '.txt';
@@ -68,9 +76,10 @@ express()
 
         const name = req.query.list;
         client.query(`CREATE TABLE IF NOT EXISTS ${name} (id VARCHAR(12) UNIQUE)`, (err, res) => {
-            const values = req.map(el => `('${el}')`);
+            // console.log(req.body);
+            const values = req.body.map(el => `('${el}')`);
             client.query(`INSERT INTO ${name}(id) VALUES ` + values, (err, res) => {
-                console.log(err, res);
+                // console.log(err, res);
                 if (err) throw err;
                 fullRes.sendStatus(200)
             });
