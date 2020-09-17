@@ -22,10 +22,12 @@
 <script>
     <% include google.js %>
     let videos = [];
+    const urlParams = new URLSearchParams(window.location.search);
+    const listName = urlParams.get('list')
 
     $(document).ready(function () {
         loadClient().then(_ => {
-            loadVideos().then(vids => {
+            loadVideos(listName).then(vids => {
                 videos = vids;
                 videos.forEach(video => addToTable(video))
             })
@@ -41,25 +43,27 @@
 
 
     async function addToTable(videoId) {
-        const $deleteVideo = $('<button/>')
-            .html('<span style="color:red">X</span>')
-            .click(deleteHandler(videoId));
-
         const video = await get_video(videoId)
-        videos.push(videoId)
+        if (video) {
+            const $deleteVideo = $('<button/>')
+                .html('<span style="color:red">X</span>')
+                .click(deleteHandler(videoId));
 
-        $('<tr>')
-            .append($('<td>').append(get_channel(video)))
-            .append($('<td>').append($('<a>', {
-                text: get_title(video),
-                href: "https://www.youtube.com/watch?v=" + videoId
-            })))
-            .append($('<td>').append($deleteVideo))
-            .prependTo("#videos")
+            videos.push(videoId)
+
+            $('<tr>')
+                .append($('<td>').append(get_channel(video)))
+                .append($('<td>').append($('<a>', {
+                    text: get_title(video),
+                    href: "https://www.youtube.com/watch?v=" + videoId
+                })))
+                .append($('<td>').append($deleteVideo))
+                .prependTo("#videos")
+        }
     }
 
     function save() {
-        updateVideos(videos).then(res => {
+        updateVideos(videos, listName).then(res => {
             console.log(res)
             alert("Saved");
         })
@@ -70,6 +74,16 @@
         const videoId = new URL($("#video").val()).searchParams.get('v')
         if (videoId) {
             await addToTable(videoId)
+        }
+
+        return false;
+    }
+
+    async function addPlaylist() {
+        const playlistId = new URL($("#playlist").val()).searchParams.get('list')
+        if (playlistId) {
+            const playlist = await get_playlist(playlistId)
+            playlist.forEach(videoId => addToTable(videoId))
         }
 
         return false;
@@ -85,6 +99,12 @@
     <label for="video">Youtube link: </label><input type="text" id="video" name="video"/>
     <input class="button" name="Add" type="button" value="submit" onclick="add()"/>
 </form>
+
+<form>
+    <label for="playlist">Youtube playlist: </label><input type="text" id="playlist" name="playlist"/>
+    <input class="button" name="Add" type="button" value="submit" onclick="addPlaylist()"/>
+</form>
+
 <button onclick="save()">Save</button>
 <table id="videos">
     <tr>

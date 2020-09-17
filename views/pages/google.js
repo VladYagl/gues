@@ -1,17 +1,24 @@
 const API_KEY = 'AIzaSyBBdYuKULGXHTKl7nyKbyogNVVwAR2eAoM';
 gapi.load("client");
 
-async function loadVideos() {
-    videos = await fetch('videos');
+async function loadVideos(listName) {
+    console.log('/videos?' + new URLSearchParams({
+        list: listName,
+    }));
+    let videos = await fetch('/videos?' + new URLSearchParams({
+        list: listName,
+    }));
     videos = await videos.body.getReader().read();
     videos = new TextDecoder("utf-8").decode(videos.value);
     videos = videos.split('\n');
     return videos;
 }
 
-function updateVideos(videos) {
+function updateVideos(videos, listName) {
     videos = [...new Set(videos)];
-    return fetch("/videos", {
+    return fetch('/videos?' + new URLSearchParams({
+        list: listName,
+    }), {
         method: "POST",
         body: videos.join("\n")
     })
@@ -126,4 +133,26 @@ function get_threads(videoId) {
         "order": "relevance",
         "videoId": videoId
     }).then(response => response.result.items)
+}
+
+function get_playlist(playlistId, pageToken = "") {
+    return gapi.client.youtube.playlistItems.list({
+        "part": [
+            "id, snippet, contentDetails"
+        ],
+        "maxResults": 200,
+        "pageToken": pageToken,
+        "playlistId": playlistId
+    }).then(response => {
+        let ids = response.result.items.map(item => item.snippet.resourceId.videoId);
+        if (response.result.nextPageToken) {
+            console.log("DEEPER");
+            return get_playlist(playlistId, response.result.nextPageToken).then(list => {
+                ids = ids.concat(list);
+                return ids
+            });
+        } else {
+            return ids
+        }
+    })
 }

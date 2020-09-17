@@ -1,21 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>COCK</title>
+    <title>G U E S</title>
 </head>
 
 <style>
-    /*table, th, td {*/
-    /*    border: 1px solid black;*/
-    /*    border-collapse: collapse;*/
-    /*}*/
+    #snackbar {
+        visibility: hidden; /* Hidden by default. Visible on click */
+        min-width: 150px; /* Set a default minimum width */
+        margin-left: -125px; /* Divide value of min-width by 2 */
+        background-color: green; /* Black background color */
+        color: #fff; /* White text color */
+        text-align: center; /* Centered text */
+        border-radius: 16px; /* Rounded borders */
+        padding: 12px; /* Padding */
+        position: fixed; /* Sit on top of the screen */
+        z-index: 1; /* Add a z-index if needed */
+        left: 50%; /* Center the snackbar */
+        top: 40px; /* 40px from the bottom */
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 20px;
+    }
+
+    /* Show the snackbar when clicking on a button (class added with JavaScript) */
+    #snackbar.show {
+        visibility: visible; /* Show the snackbar */
+        /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+        However, delay the fade out process for 2.5 seconds */
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    /* Animations to fade the snackbar in and out */
+    @-webkit-keyframes fadein {
+        from {
+            top: 0;
+            opacity: 0;
+        }
+        to {
+            top: 40px;
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadein {
+        from {
+            top: 0;
+            opacity: 0;
+        }
+        to {
+            top: 40px;
+            opacity: 1;
+        }
+    }
+
+    @-webkit-keyframes fadeout {
+        from {
+            top: 40px;
+            opacity: 1;
+        }
+        to {
+            top: 0;
+            opacity: 0;
+        }
+    }
+
+    @keyframes fadeout {
+        from {
+            top: 40px;
+            opacity: 1;
+        }
+        to {
+            top: 0;
+            opacity: 0;
+        }
+    }
+
     table, th, td {
-        vertical-align: top;
         max-width: none;
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         padding: 0px;
+    }
+
+    .choice-container {
+        background: black;
+    }
+
+    .choice {
+        transition: transform .2s; /* Animation */
+    }
+
+    .choice:hover {
+        transform: scale(1.15);
+        opacity: 0.7;
+        border-radius: 10px;
+        cursor: pointer;
     }
 
     .container {
@@ -616,16 +697,20 @@
     <% include google.js %>
     let score = 0;
     let videos = [];
+    let notUsed = [];
 
     async function play() {
         // let videos = ['u3K6_89Ee4U', '4cucHc2vef4', 'InwwkaoUBeg'];
 
-        let videoId = videos[Math.floor(Math.random() * videos.length)];
+        let videoId = notUsed[Math.floor(Math.random() * notUsed.length)];
+        notUsed = notUsed.filter(id => id !== videoId);
         // let videoId = 'AZKPd3k6O6A'
 
         let threads = await get_threads(videoId)
         let video = await get_video(videoId);
         let channel = get_channel(video)
+
+        console.log(video)
 
         let author = ""
         let comment = ""
@@ -633,7 +718,6 @@
         for (let i = 0; i < 20; i++) {
             author = get_author(threads[i])
             comment = get_comment(threads[i])
-            console.log(threads[i])
 
             if (author !== channel) {
                 break
@@ -643,7 +727,6 @@
         let newc = comment.split(/(?=[\s,'.\n\r\t]+)/)
         newc = newc.map(word => {
             let clean = word.toLowerCase().trim().replace(/[,'.\n\r\t\s]/, '')
-            // console.log(clean, channel, channel.toLowerCase().includes(clean), get_title(video).toLowerCase().includes(clean))
             if (/^[a-zA-Z0-9()]+$/.test(clean) && clean.length > 2 && channel.toLowerCase().includes(clean)) {
                 return "_______"
             } else {
@@ -651,15 +734,14 @@
             }
         })
         comment = newc.join("")
-        console.log(newc)
 
         let table = $('#table')
-        $('#score').text(score)
-        $('#play').hide()
+        $("#status").html("")
+        $('#score').css('display', 'inline-block').text(score)
+        $('.hide-start').hide()
         $('#iamgenius').show()
-        $('#add').hide()
         $('#rules').text("Guess the music video by the top comment")
-        table.empty()
+        table.empty().show()
         $('#likes').text(get_likes(threads[0]))
         $('#thumb').attr("src", get_profile(threads[0]))
         $('#author').text(author)
@@ -671,15 +753,20 @@
         selected.push(videoId)
         selected = shuffle(selected)
 
-        let cnt = 0;
+        let sel = []
+        for (const videoId of selected) {
+            sel.push(await get_video(videoId));
+        }
+        selected = sel
+
         for (let i = 0; i < selected.length; i += 3) {
             let row = $('<tr>').appendTo(table)
-            for (const videoId of selected.slice(i, i + 3)) {
-                row.append($('<td>').text(get_title(await get_video(videoId)).split('-')[0].slice(0, 30)))
+            for (const video of selected.slice(i, i + 3)) {
+                row.append($('<td>').text(get_title(video).split('-')[0].slice(0, 30)))
             }
             row = $('<tr>').appendTo(table)
-            for (const videoId of selected.slice(i, i + 3)) {
-                const test = get_title(await get_video(videoId)).split(/[-—](.+)/)
+            for (const video of selected.slice(i, i + 3)) {
+                const test = get_title(video).split(/[-—](.+)/)
                 if (test.length > 1) {
                     row.append($('<td>').text(test[1].slice(0, 30)))
                 } else {
@@ -687,8 +774,15 @@
                 }
             }
             row = $('<tr>').appendTo(table)
-            for (const videoId of selected.slice(i, i + 3)) {
-                row.append($('<td>').append($('<img>', {id: videoId, class: 'choice', src: get_thumbnail(await get_video(videoId)), width: 300})));
+            for (const video of selected.slice(i, i + 3)) {
+                row.append($('<td>', {
+                    class: "choice-container"
+                }).append($('<img>', {
+                    id: video.id,
+                    class: 'choice',
+                    src: get_thumbnail(video),
+                    width: 300
+                })));
             }
         }
 
@@ -696,14 +790,36 @@
             let selectedId = img.currentTarget.id;
             if (selectedId === videoId) {
                 inc_score()
-                $("#status").html("<p style=\"color:green\">CORRECT.</p>")
+                const snackbar = $("#snackbar");
+                snackbar.text("Correct").addClass("show").css("background-color", "#228822")
+                setTimeout(_ => snackbar.removeClass("show"), 1500)
                 play()
             } else {
                 score = 0
-                $('#play').show()
-                $("#status").html(`<p style="color:red">WRONG. It was: ${get_title(video)}</p>`)
+                notUsed = videos;
+                $('#play').show();
+                table.hide();
+
+                const snackbar = $("#snackbar");
+                snackbar.text("Wrong").addClass("show").css("background-color", "#AA2222")
+                setTimeout(_ => snackbar.removeClass("show"), 1500)
+                $("#status").html(`<p style="color:#AA2222">It was: ${get_title(video)}</p>`)
             }
         })
+    }
+
+    function loadList(list) {
+        loadVideos(list).then(vids => {
+            videos = vids;
+            notUsed = videos;
+            $('#loaded').text("Selected list: " + list)
+        })
+    }
+
+    async function load() {
+        const list = $('#select option:selected').text()
+        // console.log(list)
+        loadList(list)
     }
 
     function inc_score() {
@@ -713,17 +829,38 @@
 
     $(document).ready(function () {
         loadClient()
-        loadVideos().then(vids => videos = vids)
+        loadList('videos')
+        fetch('/lists').then(res => {
+            res.json().then(list => {
+                list.forEach(el => {
+                    $('#select').append($('<option>', {
+                        value: el,
+                        text: el
+                    }))
+                })
+            })
+        })
     });
 
 </script>
+
+<div id="snackbar">Some text some message..</div>
 
 <div class="container">
     <h3>
         <div id="status"></div>
     </h3>
 
-    <button id="play" onclick="play()">Play</button>
+    <button id="play" class="hide-start" onclick="play()">Play</button>
+
+    <span id="loaded" class="hide-start"></span>
+
+    <br class="hide-start">
+    <br class="hide-start">
+
+    <select id="select" class="hide-start">
+    </select>
+    <button id="load" onclick="load()" class="hide-start">Load</button>
 
     <h2>
         <div style="text-align:center" id="rules">
@@ -732,10 +869,11 @@
 
     <h2>
         Score:
-        <div id="score" style="display: inline">0</div>
+        <div id="score" style="display: none">0</div>
     </h2>
 
-    <form action="/edit" id="add">
+    <form action="/edit" id="add" class="hide-start">
+        <label for="list">List:</label><input type="text" id="list" name="list" value="videos"/>
         <input type="submit" value="Add videos"/>
     </form>
 
