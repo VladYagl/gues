@@ -13,7 +13,7 @@ const client = new Client({
 });
 
 client.query('CREATE TABLE IF NOT EXISTS videos (id VARCHAR(10), list VARCHAR(50));', (err, res) => {
-    console.log('SHIT');
+    console.log('SHIT', err, res);
     if (err) throw err;
     for (let row of res.rows) {
         console.log(JSON.stringify(row));
@@ -31,7 +31,6 @@ express()
 
     .get('/lists', (req, res) => {
         fs.readdir('.', (err, files) => {
-            console.log(files, err);
             let lists = files.filter(el => /\.txt$/.test(el)).map(el => el.replace(/\.[^/.]+$/, ""))
             console.log(lists);
             res.send(lists)
