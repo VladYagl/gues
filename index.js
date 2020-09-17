@@ -12,6 +12,7 @@ const client = new Client({
     }
 });
 
+console.log(process.env.DATABASE_URL);
 client.query('CREATE TABLE IF NOT EXISTS videos (id VARCHAR(10), list VARCHAR(50));', (err, res) => {
     console.log('SHIT', err, res);
     if (err) throw err;
