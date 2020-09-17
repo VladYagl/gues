@@ -43,8 +43,8 @@
 
 
     async function addToTable(videoId) {
-        const video = await get_video(videoId)
-        if (video) {
+        // const video = await get_video(videoId)
+        // if (video) {
             const $deleteVideo = $('<button/>')
                 .html('<span style="color:red">X</span>')
                 .click(deleteHandler(videoId));
@@ -52,14 +52,15 @@
             videos.push(videoId)
 
             $('<tr>')
-                .append($('<td>').append(get_channel(video)))
+                .append($('<td>').append('--'))
+                // .append($('<td>').append(get_channel(video)))
                 .append($('<td>').append($('<a>', {
-                    text: get_title(video),
-                    href: "https://www.youtube.com/watch?v=" + videoId
+                    // text: get_title(video),
+                    text: "https://www.youtube.com/watch?v=" + videoId
                 })))
                 .append($('<td>').append($deleteVideo))
                 .prependTo("#videos")
-        }
+        // }
     }
 
     function save() {

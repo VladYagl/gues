@@ -1,4 +1,5 @@
-const API_KEY = 'AIzaSyBBdYuKULGXHTKl7nyKbyogNVVwAR2eAoM';
+// const API_KEY = 'AIzaSyBBdYuKULGXHTKl7nyKbyogNVVwAR2eAoM';
+const API_KEY = 'AIzaSyBhZG9W3XlTio_a0aaEeEBHn3li5wAzjS4';
 gapi.load("client");
 
 async function loadVideos(listName) {
@@ -8,9 +9,8 @@ async function loadVideos(listName) {
     let videos = await fetch('/videos?' + new URLSearchParams({
         list: listName,
     }));
-    videos = await videos.body.getReader().read();
-    videos = new TextDecoder("utf-8").decode(videos.value);
-    videos = videos.split('\n');
+    videos = await videos.json();
+    console.log(videos);
     return videos;
 }
 
@@ -20,7 +20,11 @@ function updateVideos(videos, listName) {
         list: listName,
     }), {
         method: "POST",
-        body: videos.join("\n")
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(videos)
     })
 }
 
