@@ -1,8 +1,611 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <% include ../partials/header.ejs %>
+    <title>COCK</title>
 </head>
+
+<style>
+    /*table, th, td {*/
+    /*    border: 1px solid black;*/
+    /*    border-collapse: collapse;*/
+    /*}*/
+    table, th, td {
+        vertical-align: top;
+        max-width: none;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        padding: 0px;
+    }
+
+    .container {
+        width: 50%; /*whatever*/
+        margin: 0 auto;
+    }
+
+    .center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hide {
+        width: 50%; /*whatever*/
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 30px;
+        display: none;
+    }
+
+    .full {
+        background-attachment: scroll;
+        background-clip: border-box;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: none;
+        background-origin: padding-box;
+        background-position: 0% 0%;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: repeat;
+        background-size: auto;
+        border-bottom-color: rgb(0, 0, 0);
+        border-bottom-style: none;
+        border-bottom-width: 0px;
+        border-image-outset: 0;
+        border-image-repeat: stretch;
+        border-image-slice: 100%;
+        border-image-source: none;
+        border-image-width: 1;
+        border-left-color: rgb(0, 0, 0);
+        border-left-style: none;
+        border-left-width: 0px;
+        border-right-color: rgb(0, 0, 0);
+        border-right-style: none;
+        border-right-width: 0px;
+        border-top-color: rgb(0, 0, 0);
+        border-top-style: none;
+        border-top-width: 0px;
+        display: flex;
+        flex-direction: row;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 10px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+        -moz-text-size-adjust: none;
+    }
+
+    .whole {
+        background-attachment: scroll;
+        background-clip: border-box;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: none;
+        background-origin: padding-box;
+        background-position: 0% 0%;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: repeat;
+        background-size: auto;
+        border-bottom-color: rgb(0, 0, 0);
+        border-bottom-style: none;
+        border-bottom-width: 0px;
+        border-image-outset: 0;
+        border-image-repeat: stretch;
+        border-image-slice: 100%;
+        border-image-source: none;
+        border-image-width: 1;
+        border-left-color: rgb(0, 0, 0);
+        border-left-style: none;
+        border-left-width: 0px;
+        border-right-color: rgb(0, 0, 0);
+        border-right-style: none;
+        border-right-width: 0px;
+        border-top-color: rgb(0, 0, 0);
+        border-top-style: none;
+        border-top-width: 0px;
+        display: flex;
+        flex-basis: 1 e-9px;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 1;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 10px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 0px;
+        min-width: 0px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+        -moz-text-size-adjust: none;
+    }
+
+    .thumb {
+        background-attachment: scroll;
+        background-clip: border-box;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: none;
+        background-origin: padding-box;
+        background-position: 0% 0%;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: repeat;
+        background-size: auto;
+        border-bottom-color: rgb(3, 3, 3);
+        border-bottom-style: none;
+        border-bottom-width: 0px;
+        border-image-outset: 0;
+        border-image-repeat: stretch;
+        border-image-slice: 100%;
+        border-image-source: none;
+        border-image-width: 1;
+        border-left-color: rgb(3, 3, 3);
+        border-left-style: none;
+        border-left-width: 0px;
+        border-right-color: rgb(3, 3, 3);
+        border-right-style: none;
+        border-right-width: 0px;
+        border-top-color: rgb(3, 3, 3);
+        border-top-style: none;
+        border-top-width: 0px;
+        color: rgb(3, 3, 3);
+        cursor: pointer;
+        display: block;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 10px;
+        height: 40px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+        margin-top: 0px;
+        max-height: none;
+        max-width: none;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+        width: 40px;
+        -moz-text-size-adjust: none;
+
+        margin-right: 16px;
+        border-radius: 50%;
+    }
+
+    .author {
+        color: rgb(3, 3, 3);
+        cursor: pointer;
+        display: block;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 18px;
+        margin-bottom: 2px;
+        margin-right: 4px;
+        text-decoration: rgb(3, 3, 3);
+        text-decoration-color: rgb(3, 3, 3);
+        text-decoration-line: none;
+        text-decoration-style: solid;
+        text-decoration-thickness: auto;
+        -moz-text-size-adjust: none;
+        background-attachment: scroll;
+        background-clip: border-box;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: none;
+        background-origin: padding-box;
+        background-position: 0% 0%;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: repeat;
+        background-size: auto;
+        border-bottom-color: rgb(3, 3, 3);
+        border-bottom-style: none;
+        border-bottom-width: 0px;
+        border-image-outset: 0;
+        border-image-repeat: stretch;
+        border-image-slice: 100%;
+        border-image-source: none;
+        border-image-width: 1;
+        border-left-color: rgb(3, 3, 3);
+        border-left-style: none;
+        border-left-width: 0px;
+        border-right-color: rgb(3, 3, 3);
+        border-right-style: none;
+        border-right-width: 0px;
+        border-top-color: rgb(3, 3, 3);
+        border-top-style: none;
+        border-top-width: 0px;
+        color: rgb(3, 3, 3);
+        cursor: pointer;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 18px;
+        margin-left: 0px;
+        margin-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+        -moz-text-size-adjust: none;
+    }
+
+    .comment {
+        background-attachment: scroll;
+        background-clip: border-box;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: none;
+        background-origin: padding-box;
+        background-position: 0% 0%;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: repeat;
+        background-size: auto;
+        border-bottom-color: rgb(3, 3, 3);
+        border-bottom-style: none;
+        border-bottom-width: 0px;
+        border-image-repeat: stretch;
+        border-image-source: none;
+        border-left-color: rgb(3, 3, 3);
+        border-left-style: none;
+        border-left-width: 0px;
+        border-right-color: rgb(3, 3, 3);
+        border-right-style: none;
+        border-right-width: 0px;
+        border-top-color: rgb(3, 3, 3);
+        border-top-style: none;
+        border-top-width: 0px;
+        color: rgb(3, 3, 3);
+        display: -webkit-box;
+        font-family: Roboto, Arial, sans-serif;
+        margin-bottom: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 0px;
+        max-height: none;
+        min-width: 0px;
+        overflow: hidden;
+        overflow-wrap: break-word;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+        -moz-box-orient: vertical;
+        -moz-text-size-adjust: none;
+        -webkit-line-clamp: 4;
+        display: block;
+        color: rgb(3, 3, 3);
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: normal;
+        line-height: 20px;
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+        -moz-text-size-adjust: none;
+    }
+
+    .time {
+        color: rgb(96, 96, 96);
+        cursor: pointer;
+        display: inline-block;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        letter-spacing: normal;
+        line-height: 18px;
+        text-decoration: rgb(96, 96, 96);
+        text-decoration-color: rgb(96, 96, 96);
+        text-decoration-line: none;
+        text-decoration-style: solid;
+        text-decoration-thickness: auto;
+        text-transform: none;
+        white-space: nowrap;
+        -moz-text-size-adjust: none;
+    }
+
+    .author-time {
+        background-attachment: scroll;
+        background-clip: border-box;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: none;
+        background-origin: padding-box;
+        background-position: 0% 0%;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: repeat;
+        background-size: auto;
+        border-bottom-color: rgb(0, 0, 0);
+        border-bottom-style: none;
+        border-bottom-width: 0px;
+        border-image-outset: 0;
+        border-image-repeat: stretch;
+        border-image-slice: 100%;
+        border-image-source: none;
+        border-image-width: 1;
+        border-left-color: rgb(0, 0, 0);
+        border-left-style: none;
+        border-left-width: 0px;
+        border-right-color: rgb(0, 0, 0);
+        border-right-style: none;
+        border-right-width: 0px;
+        border-top-color: rgb(0, 0, 0);
+        border-top-style: none;
+        border-top-width: 0px;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 10px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+        -moz-text-size-adjust: none;
+
+        align-items: baseline;
+        background-attachment: scroll;
+        background-clip: border-box;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: none;
+        background-origin: padding-box;
+        background-position: 0% 0%;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: repeat;
+        background-size: auto;
+        border-bottom-color: rgb(0, 0, 0);
+        border-bottom-style: none;
+        border-bottom-width: 0px;
+        border-image-outset: 0;
+        border-image-repeat: stretch;
+        border-image-slice: 100%;
+        border-image-source: none;
+        border-image-width: 1;
+        border-left-color: rgb(0, 0, 0);
+        border-left-style: none;
+        border-left-width: 0px;
+        border-right-color: rgb(0, 0, 0);
+        border-right-style: none;
+        border-right-width: 0px;
+        border-top-color: rgb(0, 0, 0);
+        border-top-style: none;
+        border-top-width: 0px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 10px;
+        margin-bottom: 2px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+        -moz-text-size-adjust: none;
+    }
+
+    .toolbar {
+        align-items: center;
+        background-attachment: scroll;
+        background-clip: border-box;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: none;
+        background-origin: padding-box;
+        background-position: 0% 0%;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: repeat;
+        background-size: auto;
+        border-bottom-color: rgb(96, 96, 96);
+        border-bottom-style: none;
+        border-bottom-width: 0px;
+        border-image-outset: 0;
+        border-image-repeat: stretch;
+        border-image-slice: 100%;
+        border-image-source: none;
+        border-image-width: 1;
+        border-left-color: rgb(96, 96, 96);
+        border-left-style: none;
+        border-left-width: 0px;
+        border-right-color: rgb(96, 96, 96);
+        border-right-style: none;
+        border-right-width: 0px;
+        border-top-color: rgb(96, 96, 96);
+        border-top-style: none;
+        border-top-width: 0px;
+        color: rgb(96, 96, 96);
+        display: flex;
+        flex-direction: row;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 10px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 4px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+        -moz-text-size-adjust: none;
+    }
+
+    .icon {
+        align-items: center;
+        color: rgb(144, 144, 144);
+        cursor: pointer;
+        display: inline-flex;
+        fill: rgb(144, 144, 144);
+        font-family: Cantarell;
+        font-size: 18.6667px;
+        font-weight: 400;
+        height: 16px;
+        justify-content: center;
+        letter-spacing: normal;
+        line-height: 0px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 0px;
+        position: relative;
+        stroke: none;
+        text-transform: none;
+        vertical-align: middle;
+        width: 16px;
+        height: 16px;
+        -moz-text-size-adjust: none;
+    }
+
+    .icon-1 {
+        color: rgb(144, 144, 144);
+        display: block;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.007px;
+        margin-left: -8px;
+        text-transform: uppercase;
+        vertical-align: middle;
+        -moz-text-size-adjust: none;
+        background-color: rgba(0, 0, 0, 0);
+        box-sizing: border-box;
+        color: rgb(144, 144, 144);
+        cursor: pointer;
+        display: block;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 0px;
+        font-weight: 500;
+        height: 32px;
+        letter-spacing: 0.007px;
+        line-height: 0px;
+        padding-bottom: 8px;
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-top: 8px;
+        position: relative;
+        text-transform: uppercase;
+        width: 32px;
+        height: 32px;
+        -moz-text-size-adjust: none;
+    }
+
+    .tool-text {
+        background-attachment: scroll;
+        background-clip: border-box;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: none;
+        background-origin: padding-box;
+        background-position: 0% 0%;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: repeat;
+        background-size: auto;
+        border-bottom-color: rgb(96, 96, 96);
+        border-bottom-style: none;
+        border-bottom-width: 0px;
+        border-image-outset: 0;
+        border-image-repeat: stretch;
+        border-image-slice: 100%;
+        border-image-source: none;
+        border-image-width: 1;
+        border-left-color: rgb(96, 96, 96);
+        border-left-style: none;
+        border-left-width: 0px;
+        border-right-color: rgb(96, 96, 96);
+        border-right-style: none;
+        border-right-width: 0px;
+        border-top-color: rgb(96, 96, 96);
+        border-top-style: none;
+        border-top-width: 0px;
+        color: rgb(96, 96, 96);
+        display: block;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        letter-spacing: normal;
+        line-height: 18px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+        margin-right: 16px;
+        margin-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+        text-transform: none;
+        -moz-text-size-adjust: none;
+    }
+
+    .reply {
+        align-items: center;
+        background-attachment: scroll;
+        background-clip: border-box;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: none;
+        background-origin: padding-box;
+        background-position: 0% 0%;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: repeat;
+        background-size: auto;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        box-sizing: border-box;
+        color: rgb(96, 96, 96);
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        font-family: Roboto, Arial, sans-serif;
+        font-feature-settings: normal;
+        font-kerning: auto;
+        font-language-override: normal;
+        font-optical-sizing: auto;
+        font-size: 13px;
+        font-size-adjust: none;
+        font-stretch: 100%;
+        font-style: normal;
+        font-variant: normal;
+        font-variant-alternates: normal;
+        font-variant-caps: normal;
+        font-variant-east-asian: normal;
+        font-variant-ligatures: normal;
+        font-variant-numeric: normal;
+        font-variant-position: normal;
+        font-variation-settings: normal;
+        font-weight: 500;
+        height: 33.9167px;
+        justify-content: center;
+        letter-spacing: 0.007px;
+        line-height: normal;
+        margin-bottom: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 0px;
+        min-width: 66.82px;
+        outline-width: 0px;
+        padding-bottom: 8px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-top: 8px;
+        position: relative;
+        text-align: center;
+        text-transform: uppercase;
+        user-select: none;
+        white-space: nowrap;
+        width: 68.9667px;
+        z-index: 0;
+        -moz-text-size-adjust: none;
+    }
+</style>
 
 <script src="https://apis.google.com/js/api.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -10,36 +613,10 @@
 <body>
 
 <script>
-    /**
-     * Sample JavaScript code for youtube.commentThreads.list
-     * See instructions for running APIs Explorer code samples locally:
-     * https://developers.google.com/explorer-help/guides/code_samples#javascript
-     */
-
+    <% include ../pages/google.js %>
     let score = 0;
-    const API_KEY = 'AIzaSyBBdYuKULGXHTKl7nyKbyogNVVwAR2eAoM';
-    gapi.load("client");
-
     let videos = [];
 
-    async function loadClient() {
-        videos = await fetch('videos')
-        videos = await videos.body.getReader().read()
-        videos = new TextDecoder("utf-8").decode(videos.value);
-        videos = videos.split('\n');
-
-        gapi.client.setApiKey(API_KEY);
-        return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
-            .then(function () {
-                    $("#status").html("<p style=\"color:green\">OKI DOKI</p>")
-                    console.log("GAPI client loaded for API");
-                },
-                function (err) {
-                    console.error("Error loading GAPI client for API", err);
-                });
-    }
-
-    // Make sure the client is loaded before calling this method.
     async function play() {
         // let videos = ['u3K6_89Ee4U', '4cucHc2vef4', 'InwwkaoUBeg'];
 
@@ -56,6 +633,7 @@
         for (let i = 0; i < 20; i++) {
             author = get_author(threads[i])
             comment = get_comment(threads[i])
+            console.log(threads[i])
 
             if (author !== channel) {
                 break
@@ -75,12 +653,18 @@
         comment = newc.join("")
         console.log(newc)
 
+        let table = $('#table')
         $('#score').text(score)
         $('#play').hide()
-        $('#rules').text("Guess the music video by the top comment:")
-        $('#table').empty().append('<tr><\tr>')
+        $('#iamgenius').show()
+        $('#add').hide()
+        $('#rules').text("Guess the music video by the top comment")
+        table.empty()
+        $('#likes').text(get_likes(threads[0]))
+        $('#thumb').attr("src", get_profile(threads[0]))
         $('#author').text(author)
         $('#comment').text(comment)
+        $('#time').text(get_time(threads[0]))
 
         let selected = shuffle(videos.filter(x => x !== videoId)).slice(0, 5);
         // let selected = shuffle(videos.filter(x => x !== videoId));
@@ -88,16 +672,23 @@
         selected = shuffle(selected)
 
         let cnt = 0;
-        for (const videoId of selected) {
-            cnt++
-            let video = await get_video(videoId);
-            $('#table tr:last').append(`<td><div>${
-                get_title(video).split('-').join('<br>').replace('(Official Video)', '')
-            }</div><img id='${videoId}' class=choice src='${get_thumbnail(video)}' width=400></td>`);
-
-            if (cnt >= 3) {
-                cnt = 0;
-                $('#table').append('<tr><\tr>')
+        for (let i = 0; i < selected.length; i += 3) {
+            let row = $('<tr>').appendTo(table)
+            for (const videoId of selected.slice(i, i + 3)) {
+                row.append($('<td>').text(get_title(await get_video(videoId)).split('-')[0].slice(0, 30)))
+            }
+            row = $('<tr>').appendTo(table)
+            for (const videoId of selected.slice(i, i + 3)) {
+                const test = get_title(await get_video(videoId)).split(/[-—](.+)/)
+                if (test.length > 1) {
+                    row.append($('<td>').text(test[1].slice(0, 30)))
+                } else {
+                    row.append($('<td>'))
+                }
+            }
+            row = $('<tr>').appendTo(table)
+            for (const videoId of selected.slice(i, i + 3)) {
+                row.append($('<td>').append($('<img>', {id: videoId, class: 'choice', src: get_thumbnail(await get_video(videoId)), width: 300})));
             }
         }
 
@@ -115,60 +706,6 @@
         })
     }
 
-    function shuffle(array) {
-        return array.map(function (n) {
-            return [Math.random(), n]
-        })
-            .sort().map(function (n) {
-                return n[1]
-            });
-    }
-
-    function get_author(thread) {
-        return thread.snippet.topLevelComment.snippet.authorDisplayName
-    }
-
-    function get_comment(thread) {
-        return thread.snippet.topLevelComment.snippet.textOriginal
-    }
-
-    function get_title(video) {
-        return video.snippet.title
-    }
-
-    function get_channel(video) {
-        return video.snippet.channelTitle
-    }
-
-    function get_thumbnail(video) {
-        let thumbs = video.snippet.thumbnails
-        if (thumbs.maxres) {
-            return video.snippet.thumbnails.maxres.url
-        } else {
-            return video.snippet.thumbnails.high.url
-        }
-    }
-
-    function get_video(videoId) {
-        return gapi.client.youtube.videos.list({
-            "part": [
-                "snippet"
-            ],
-            "id": videoId
-        }).then(response => response.result.items[0])
-    }
-
-    function get_threads(videoId) {
-        return gapi.client.youtube.commentThreads.list({
-            "part": [
-                "snippet"
-            ],
-            "textFormat": "plainText",
-            "order": "relevance",
-            "videoId": videoId
-        }).then(response => response.result.items)
-    }
-
     function inc_score() {
         score++
         $('#score').text(score);
@@ -176,44 +713,81 @@
 
     $(document).ready(function () {
         loadClient()
+        loadVideos().then(vids => videos = vids)
     });
 
 </script>
 
-<h2>
-    <div id="status"></div>
-</h2>
+<div class="container">
+    <h3>
+        <div id="status"></div>
+    </h3>
 
+    <button id="play" onclick="play()">Play</button>
 
-<h1>
-    Score:
-    <div id="score" style="display: inline">0</div>
-</h1>
+    <h2>
+        <div style="text-align:center" id="rules">
+        </div>
+    </h2>
 
-<h3>
-    <div id="rules">
+    <h2>
+        Score:
+        <div id="score" style="display: inline">0</div>
+    </h2>
+
+    <form action="/edit" id="add">
+        <input type="submit" value="Add videos"/>
+    </form>
+
+</div>
+
+<div class="hide" id="iamgenius">
+    <div class="full">
+        <div class="thumb">
+            <img id="thumb" class="thumb" alt="Janai Shelton"
+                 src="https://yt3.ggpht.com/a/AATXAJzJ3ghgPsxBdNukAcTavUYcHc0Fr1t8u4oBPQ=s48-c-k-c0xffffffff-no-rj-mo"
+                 width="40" height="40">
+        </div>
+        <div class="whole">
+            <div class="author-time">
+                <div class="author" id="author">Dorian Electra</div>
+                <div class="time" id="time">1 hour ago</div>
+            </div>
+            <div class="comment" id="comment">Nerds Rise up!</div>
+            <div class="toolbar">
+                <div class="icon-1">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false"
+                             style="pointer-events: none; display: block; width: 100%; height: 100%;"
+                             class="style-scope yt-icon">
+                            <g>
+                                <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"
+                                      class="style-scope yt-icon"></path>
+                            </g>
+                        </svg><!--css-build:shady-->
+                    </div>
+                </div>
+                <span class="tool-text" id="likes"></span>
+                <div class="icon-1">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false"
+                             style="pointer-events: none; display: block; width: 100%; height: 100%;"
+                             class="style-scope yt-icon">
+                            <g>
+                                class="style-scope yt-icon"></path>
+                                <path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"
+                                      class="style-scope yt-icon"></path>
+                            </g>
+                        </svg><!--css-build:shady-->
+                    </div>
+                </div>
+                <div class="reply">REPLY</div>
+            </div>
+        </div>
     </div>
-</h3>
+</div>
 
-<br>
-<hr class="solid">
-
-<button id="play" onclick="play()">Play</button>
-
-<h4>
-    <div id="author" style="display: inline">
-    </div>
-    wrote:
-</h4>
-
-<h3>
-    <div id="comment" style="max-width: 500px">
-    </div>
-</h3>
-
-<table id="table">
-    <tr>
-    </tr>
+<table id="table" class="center">
 </table>
 
 </body>
